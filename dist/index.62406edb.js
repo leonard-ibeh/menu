@@ -8,6 +8,7 @@ const timeout = function(s) {
 };
 // https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////
+console.log("Test");
 const renderSpinner = function(parentEl) {
     const markup = `
   <div class="spinner">
