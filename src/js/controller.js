@@ -1,4 +1,4 @@
-import * as model from "./modle.js";
+import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -22,6 +22,7 @@ const controlRecipe = async function () {
     console.log(id);
 
     if (!id) return;
+    // Render the spinner
     recipeView.renderSpinner();
 
     // 1) loading recipe
@@ -29,7 +30,7 @@ const controlRecipe = async function () {
     const { recipe } = model.state;
 
     // 2) Rendering recipe
-    recipeView.render(model.state.render);
+    recipeView.render(model.state.recipe);
   } catch (error) {
     alert(error);
   }
