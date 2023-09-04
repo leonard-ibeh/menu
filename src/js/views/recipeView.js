@@ -1,17 +1,30 @@
+import icons from "url:../../img/icons.svg";
 export class RecipeView {
   #parentElement = document.querySelector(".recipe");
   #data;
   render(data) {
     this.#data = data;
-    const markup = this.#generateMarkUp;
-    this.#clear;
+    const markup = this.#generateMarkUp();
+    this.#clear();
     this.#parentElement.insertAdjacentHTML("afterbegin", markup);
   }
   #clear() {
     this.#parentElement.innerHTML = "";
   }
-  #generateMarkUp() {
+
+  renderSpinner = function () {
     const markup = `
+    <div class="spinner">
+    <svg>
+    <use href="${icons}#icon-loader"></use>
+    </svg>
+    </div>
+    `;
+    this.#parentElement.innerHTML = "";
+    this.#parentElement.insertAdjacentHTML("afterbegin", markup);
+  };
+  #generateMarkUp() {
+    return `
       <figure class="recipe__fig">
       <img src="${this.#data.image}" alt="${
       this.#data.title
