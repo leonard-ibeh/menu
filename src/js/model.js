@@ -41,9 +41,10 @@ export const loadSearchResults = async function (query) {
     state.search.results = data.data.recipes.map((rec) => {
       return {
         id: rec.id,
-        title: rec.publisher,
-        publisher: rec.publisher_url,
+        title: rec.title,
+        publisher: rec.publisher,
         sourceUrl: rec.image_url,
+        image: rec.image_url,
       };
     });
     console.log(state.search.results);
