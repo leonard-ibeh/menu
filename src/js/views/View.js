@@ -3,17 +3,21 @@ import recipeView from "./recipeView";
 
 export default class View {
   _data;
-  render(data) {
+  render(data, render = true) {
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
     this._data = data;
-    const markup = this._generateMarkUp();
+    const markup = this._generateMarkup();
+
+    if (!render) return markup;
+
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
+
   update(data) {
     this._data = data;
-    const newmarkup = this._generateMarkUp();
+    const newmarkup = this._generateMarkup();
 
     const newDOM = document.createRange().createContextualFragment(newmarkup);
     const newElements = Array.from(newDOM.querySelectorAll("*"));
@@ -21,6 +25,7 @@ export default class View {
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
       // console.log(curEl, newEl.isEqualNode(curEl));
+
       //   Updates changed TEXT
       if (
         !newEl.isEqualNode(curEl) &&
@@ -36,6 +41,8 @@ export default class View {
         );
     });
   }
+
+  //  This clears data from the parent Element
   _clear() {
     this._parentElement.innerHTML = "";
   }
@@ -51,6 +58,8 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
+
+  // This renders the Error messages
   renderError(message = this._errorMessage) {
     const markup = `
       <div class="error">
@@ -65,6 +74,7 @@ export default class View {
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
+
   renderMessage(message = this._message) {
     const markup = `
       

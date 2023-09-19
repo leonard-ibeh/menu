@@ -28,7 +28,7 @@ class RecipeView extends View {
       handler();
     });
   }
-  _generateMarkUp() {
+  _generateMarkup() {
     return `
       <figure class="recipe__fig">
       <img src="${this._data.image}" alt="${
