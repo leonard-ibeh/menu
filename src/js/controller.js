@@ -99,7 +99,10 @@ const controlAddBookmark = function () {
 const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
 };
-
+const controlAddRecipe = function (newRecipe) {
+  //Upload the new recipe data
+  model.uploadRecipe(newRecipe);
+};
 // window.addEventListener("hashchange", controlRecipe);
 // window.addEventListener("load", controlRecipe);
 const init = function () {
@@ -109,10 +112,6 @@ const init = function () {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 init();
-
-const clearBookmarks = function () {
-  localStorage.clear("bookmarks");
-};
-// clearBookmarks();

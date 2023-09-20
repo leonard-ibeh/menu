@@ -12,19 +12,33 @@ class AddRecipeView extends View {
   constructor() {
     super();
     this._addHandlerShowWindow();
+    this._addHandlerHideWindow();
   }
   toggleWindow() {
     this._overlay.classList.toggle("hidden");
     this._window.classList.toggle("hidden");
   }
-  /* Using the *this* keyword inside of a handler points to the element on which the listenner is attached To(_btnOpen), 
+  /* Using the *this* keyword inside of a handler function points to the element on which the listener is attached To(_btnOpen), 
      That is why I exported to another method (toggleWindow)
-     Then I called the method in the _addHandlerShowWindow method 
-     So it points to the current object not the (_btnOpen) 
+     Then I called the method in the _addHandlerShowWindow method
+     So it points to the current object not the (_btnOpen)
      */
 
   _addHandlerShowWindow() {
     this._btnOpen.addEventListener("click", this.toggleWindow.bind(this));
+  }
+  _addHandlerHideWindow() {
+    this._btnClose.addEventListener("click", this.toggleWindow.bind(this));
+    this._overlay.addEventListener("click", this.toggleWindow.bind(this));
+  }
+  addHandlerUpload(handler) {
+    this._parentElement.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const dataArr = [...new FormData(this)];
+      // Converted the data Entries to an Object
+      const data = Object.fromEntries(dataArr);
+      handler(data);
+    });
   }
 
   _generateMarkup() {}
