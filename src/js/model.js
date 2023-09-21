@@ -112,14 +112,21 @@ const clearBookmarks = function () {
 };
 // clearBookmarks();
 
-// Map is used to creat a new array based on an existing one.
+// ** Map is used to creat a new array based on an existing one.
 export const uploadRecipe = async function (newRecipe) {
   const ingredients = Object.entries(newRecipe)
+    // filter says => the first entry should start(startsWith) with ingredient and (&&) the second element should not be an empty string (!==)
     .filter((entry) => entry[0].startsWith("ingredient") && entry[1] !== "")
+    //Then take the data and map in an Object
     .map((ing) => {
-      const [quantity, unit, description] = ing[1]
-        .replaceAll(" ", "")
-        .split(",");
+      const ingArr = ing[1].replaceAll(" ", "").split(",");
+
+      if (ingArr.length !== 3)
+        throw new Error(
+          "Wrong ingredient fromat! Please use the correct format :)"
+        );
+
+      const [quantity, unit, description] = ingArr;
       return { quantity: quantity ? +quantity : null, unit, description };
     });
   console.log(ingredients);
