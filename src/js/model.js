@@ -142,9 +142,12 @@ export const uploadRecipe = async function (newRecipe) {
       servings: +newRecipe.servings,
       ingredients,
     };
-    const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
+    const data = await sendJSON(
+      `${API_URL}?search={recipe.title}&key=${KEY}`,
+      recipe
+    );
     console.log(data);
-    // state.recipe = createRecipeObject(data);
+    state.recipe = createRecipeObject(data);
   } catch (err) {
     throw err;
   }
