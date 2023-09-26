@@ -1,6 +1,7 @@
 import { async } from "regenerator-runtime";
 import { API_URL, RES_PER_PAGE, KEY } from "./config";
-import { getJSON, sendJSON } from "./helpers";
+// import { getJSON, sendJSON } from "./helpers";
+import { AJAX } from "./helpers";
 export const state = {
   recipe: {},
   search: {
@@ -29,7 +30,7 @@ const createRecipeObject = function (data) {
 
 export const loadRecipe = async function (id) {
   try {
-    const data = await getJSON(`${API_URL}/${id}`);
+    const data = await AJAX(`${API_URL}/${id}?key=${KEY}`);
     state.recipe = createRecipeObject(data);
     if (state.bookmarks.some((bookmark) => bookmark.id === id))
       state.recipe.bookmarked = true;
@@ -47,8 +48,7 @@ export const loadRecipe = async function (id) {
 export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
-    const data = await getJSON(`${API_URL}?search=${query}`);
-    console.log(data);
+    const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
 
     state.search.results = data.data.recipes.map((rec) => {
       return {
@@ -57,6 +57,7 @@ export const loadSearchResults = async function (query) {
         publisher: rec.publisher,
         sourceUrl: rec.image_url,
         image: rec.image_url,
+        ...(rec.key && { key: recipe.key }),
       };
     });
     state.search.page = 1;
@@ -125,7 +126,8 @@ export const uploadRecipe = async function (newRecipe) {
       .filter((entry) => entry[0].startsWith("ingredient") && entry[1] !== "")
       //Then take the data and map in an Object
       .map((ing) => {
-        const ingArr = ing[1].replaceAll(" ", "").split(",");
+        const ingArr = ing[1].split(",").map((el = el.trim()));
+        // const ingArr = ing[1].replaceAll(" ", "").split(",");
 
         if (ingArr.length !== 3)
           throw new Error(
@@ -144,7 +146,7 @@ export const uploadRecipe = async function (newRecipe) {
       servings: +newRecipe.servings,
       ingredients,
     };
-    const data = await sendJSON(
+    const data = await AJAX(
       `${API_URL}?search={recipe.title}&key=${KEY}`,
       recipe
     );
