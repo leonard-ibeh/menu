@@ -57,7 +57,7 @@ export const loadSearchResults = async function (query) {
         publisher: rec.publisher,
         sourceUrl: rec.image_url,
         image: rec.image_url,
-        ...(rec.key && { key: recipe.key }),
+        ...(rec.key && { key: rec.key }),
       };
     });
     state.search.page = 1;
@@ -126,7 +126,7 @@ export const uploadRecipe = async function (newRecipe) {
       .filter((entry) => entry[0].startsWith("ingredient") && entry[1] !== "")
       //Then take the data and map in an Object
       .map((ing) => {
-        const ingArr = ing[1].split(",").map((el = el.trim()));
+        const ingArr = ing[1].split(",").map((el) => el.trim());
         // const ingArr = ing[1].replaceAll(" ", "").split(",");
 
         if (ingArr.length !== 3)
