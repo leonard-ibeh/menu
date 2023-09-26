@@ -22,6 +22,8 @@ const createRecipeObject = function (data) {
     servings: recipe.servings,
     cookingTime: recipe.cooking_time,
     ingredients: recipe.ingredients,
+    // A nice trick to add properties to an object
+    ...(recipe.key && { key: recipe.key }),
   };
 };
 
@@ -148,6 +150,7 @@ export const uploadRecipe = async function (newRecipe) {
     );
     console.log(data);
     state.recipe = createRecipeObject(data);
+    addBookmark(state.recipe);
   } catch (err) {
     throw err;
   }
